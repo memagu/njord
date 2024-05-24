@@ -1,8 +1,5 @@
-from pathlib import Path
-
+from app.configuration.global_config import DATABASE
 from app.configuration.njord_gui import njord_gui
-
-DATABASE = Path("./njord.db")
 
 
 def main() -> None:
