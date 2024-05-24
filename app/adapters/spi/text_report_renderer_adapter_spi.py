@@ -36,8 +36,8 @@ class TextReportRendererAdapterSPI:
                         f"Tel: {call.phone_number}",
                         f"Start time: {call.start_time.isoformat()}",
                         f"Duration: Ca. {call.duration}",
-                        f"Case(s): {", ".join(call.cases)}",
-                        f"{report.interval} minute interval: {half_hour.isoformat()}"
+                        f"Cases: {", ".join(call.cases)}",
+                        f"{int(report.interval.total_seconds() / 60)} minute interval: {half_hour.isoformat()}"
                     )) for call in group
                 ))
             )
