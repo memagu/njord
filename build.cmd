@@ -1,0 +1,1 @@
+pyinstaller --onefile --noconsole --clean --paths ".\venv\Lib\site-packages" --icon=NONE ".\app\configuration\njord.py"
