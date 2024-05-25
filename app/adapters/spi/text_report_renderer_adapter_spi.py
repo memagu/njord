@@ -4,6 +4,10 @@ from functools import reduce
 from app.core.model.report import ReportFlavor, Report
 
 
+def seconds_to_minutes(seconds: int | float) -> int:
+    return round(seconds / 60)
+
+
 class TextReportRendererAdapterSPI:
     def __init__(self, flavor: ReportFlavor, group_separator: str = '#', call_separator: str = '-'):
         self._flavor = flavor
@@ -22,22 +26,22 @@ class TextReportRendererAdapterSPI:
         data = [
             f"Period: {start.astimezone().isoformat()} -> {end.astimezone().isoformat()}",
             "",
-            f"Calls: {len(report.calls)}", f"Initiated half hours: {len(intervals)}",
+            f"Calls: {len(report.calls)}", f"Initiated {seconds_to_minutes(report.interval_size.total_seconds())} minute intervals: {len(intervals)}",
             f"Active work time: {reduce(lambda td, c: td + c.duration, report.calls, timedelta())}",
             ""
         ]
 
         for n, (half_hour, group) in enumerate(intervals, 1):
-            data.append(f"{f" {n}. {half_hour.isoformat()} ".center(32, self._group_separator)}")
+            data.append(f"{f" {n}. {half_hour.isoformat()} ".center(64, self._group_separator)}")
             data.append("")
             data.append(
-                f"\n\n{self._call_separator * 32}\n\n".join((
+                f"\n\n{self._call_separator * 48}\n\n".join((
                     '\n'.join((
                         f"Tel: {call.phone_number}",
                         f"Start time: {call.start_time.isoformat()}",
                         f"Duration: Ca. {call.duration}",
                         f"Cases: {", ".join(call.cases)}",
-                        f"{int(report.interval.total_seconds() / 60)} minute interval: {half_hour.isoformat()}"
+                        f"{seconds_to_minutes(report.interval_size.total_seconds())} minute interval: {half_hour.isoformat()}"
                     )) for call in group
                 ))
             )
