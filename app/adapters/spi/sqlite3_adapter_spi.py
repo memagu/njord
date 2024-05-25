@@ -101,6 +101,6 @@ class SQLite3AdapterSPI:
             cursor = connection.cursor()
             cursor.execute(
                 """SELECT * FROM "call" WHERE "start_time" BETWEEN ? AND ? ORDER BY "start_time" ASC;""",
-                (start.timestamp(), end.timestamp())
+                (round(start.timestamp()), round(end.timestamp()))
             )
             return tuple(map(row_to_call, cursor.fetchall()))
