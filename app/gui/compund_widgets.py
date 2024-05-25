@@ -11,6 +11,9 @@ from .custom_base_widgets import PositiveSpinbox, ExpandableLineEditList, Better
 from .util import Call, NewCall
 
 
+DATETIME_FILE_NAME_FORMAT = "yyyyMMddHHmmss"
+
+
 class CallForm(QWidget):
     registerCallSubmitted = Signal(tuple)
     updateCallSubmitted = Signal(tuple)
@@ -148,14 +151,14 @@ class GenerateReportBar(QWidget):
         generate_report_container = QGroupBox("Generate Report")
         generate_report_container_layout = QHBoxLayout(generate_report_container)
 
-        self.interval = PositiveSpinbox()
-        self.interval.setValue(default_interval_value)
-        self.interval.setSuffix(" minutes")
+        self.interval_size = PositiveSpinbox()
+        self.interval_size.setValue(default_interval_value)
+        self.interval_size.setSuffix(" minutes")
 
         interval_layout = QHBoxLayout()
         interval_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
         interval_layout.addWidget(QLabel("Interval:"))
-        interval_layout.addWidget(self.interval)
+        interval_layout.addWidget(self.interval_size)
 
         self.create_report_button = QPushButton("Generate report")
         self.create_report_button.clicked.connect(self._create_report_button_clicked)
@@ -168,14 +171,14 @@ class GenerateReportBar(QWidget):
 
     def _create_report_button_clicked(self):
         start, end = self.date_range_edit.get_date_range()
-        interval = self.interval.value()
+        interval_size = self.interval_size.value()
         file_name, _ = QFileDialog.getSaveFileName(
             self,
             "Create report",
-            f"{start.toString(Qt.DateFormat.ISODate)}_-_{end.toString(Qt.DateFormat.ISODate)}_[{interval} minutes].txt",
+            f"{start.toString(DATETIME_FILE_NAME_FORMAT)}-{end.toString(DATETIME_FILE_NAME_FORMAT)}_({interval_size}_minutes).txt",
             filter="Text files (*.txt)"
         )
-        self.generateReportPressed.emit((start, end, interval, Path(file_name)))
+        self.generateReportPressed.emit((start, end, interval_size, Path(file_name)))
 
 
 class CallTable(QTableWidget):

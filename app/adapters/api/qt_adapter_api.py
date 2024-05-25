@@ -70,9 +70,9 @@ class QTAdapterAPI:
     def _generate_report(self, generate_report_request: tuple[QDateTime, QDateTime, int, Path]) -> None:
         start = generate_report_request[0].toPython()
         end = generate_report_request[1].toPython()
-        interval = generate_report_request[2]
+        interval_size = generate_report_request[2]
         file_name = str(generate_report_request[3].absolute())
-        self.report_port_api.export_report(start, end, timedelta(minutes=interval), file_name,
+        self.report_port_api.export_report(start, end, timedelta(minutes=interval_size), file_name,
                                            self.report_port_api.get_flavors().pop())
 
     def _populate_form(self, id_: int) -> None:

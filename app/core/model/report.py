@@ -6,7 +6,7 @@ from app.core.model.call import Call
 
 @dataclass(frozen=True)
 class Report:
-    interval: timedelta
+    interval_size: timedelta
     intervals: dict[datetime, tuple[Call, ...]]
 
     @property
