@@ -39,12 +39,16 @@ class CallForm(QWidget):
         _button_layout.addWidget(self.register_new_call, 2)
         _button_layout.addWidget(self.update_call, 1)
 
+        self.clear_form = QPushButton("Clear")
+        self.clear_form.clicked.connect(self.reset_fields)
+
         self._layout.addRow("ID:", self.id)
         self._layout.addRow("Phone number:", self.phone_number)
         self._layout.addRow("Start time:", self.start_time)
         self._layout.addRow("Duration:", self.duration)
         self._layout.addRow("Cases:", self.cases)
         self._layout.addRow(_button_layout)
+        self._layout.addRow(self.clear_form)
 
     def _submit_register_call(self) -> None:
         form_data = self.get_form_data()
